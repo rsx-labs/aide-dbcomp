@@ -1,11 +1,19 @@
 USE [AIDE]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetAllProjects]    Script Date: 04/22/2020 5:22:55 PM ******/
+
+/****** Object:  StoredProcedure [dbo].[sp_GetAttendanceToday]    Script Date: 5/29/2020 6:27:52 PM ******/
+DROP PROCEDURE [dbo].[sp_GetAllProjects]
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_GetAttendanceToday]    Script Date: 5/29/2020 6:27:52 PM ******/
 SET ANSI_NULLS ON
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
-ALTER PROCEDURE [dbo].[sp_GetAllProjects]
+
+
+CREATE PROCEDURE [dbo].[sp_GetAllProjects]
 	@EMP_ID INT,
 	@DISPLAY_STATUS INT
 AS
