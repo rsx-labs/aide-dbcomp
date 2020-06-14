@@ -1,1 +1,0 @@
-all scripts that drops/alters a view goes here ..

@@ -1,0 +1,44 @@
+{
+    "setting" : {
+        "version" : "0.1",
+        "log_loc" : "c:\\Temp\\aide-dbcomp-install.log",
+        "database" : {
+            "server" : "localhost",
+            "dbase" : "AIDE"
+        },
+        "installs" : {
+            "full" : {
+                "folders" : [
+                    "database", 
+                    "users", 
+                    "tables", 
+                    "views", 
+                    "stored_procedures", 
+                    "functions" , 
+                    "data"
+                ]
+            },
+            "delta" :{
+                "all" : {
+                    "folders":[
+                        "tables", 
+                        "views", 
+                        "stored_procedures", 
+                        "functions" 
+                    ]
+                },
+                "account" : {
+                    "names" : [
+                        "dept_retail"
+                    ],
+                    "folders":[
+                        "tables", 
+                        "views", 
+                        "stored_procedures", 
+                        "functions" 
+                    ]
+                }
+            }
+        }
+    }
+}

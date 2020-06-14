@@ -7,9 +7,13 @@ This is the database component of AIDE
 
 ## Folder Structure
 
-- All SQL scripts are in the 'src' folder
+- All SQL scripts are in the 'src' folder. 
+- The PS script to install is the 'installdb.ps1'
+- The version is on the 'version.reg' file.
 - All required scripts for full install is in the 'src\full' folder.  Any changes that will affect the full install should go here.
-- All data are in the 'src\data' folder. All required data during full install are in 'src\data\required_data' folder. Account specific data are in 'src\data\account_data' folder.
+- The 'src\delta' folder contains all the changes after the full install.
+- The 'src\delta\all' folder should be applied to all.
+- The 'src\delta\account' folder are specific to the account or department.
 - All modifications to tables , functions, stored procedures , and functions that needs to be applied as a service pack and does not require a full install goes into this folder.  Note that if the change is a large one and affects the full install, full install scripts at 'src\full' must also be updated.
 
 #### NOTE
