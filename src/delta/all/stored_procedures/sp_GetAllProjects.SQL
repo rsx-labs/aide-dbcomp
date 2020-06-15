@@ -1,16 +1,17 @@
 USE [AIDE]
 GO
 
-/****** Object:  StoredProcedure [dbo].[sp_GetAttendanceToday]    Script Date: 5/29/2020 6:27:52 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllProjects]    Script Date: 6/15/2020 10:50:40 PM ******/
 DROP PROCEDURE [dbo].[sp_GetAllProjects]
 GO
 
-/****** Object:  StoredProcedure [dbo].[sp_GetAttendanceToday]    Script Date: 5/29/2020 6:27:52 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetAllProjects]    Script Date: 6/15/2020 10:50:40 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 CREATE PROCEDURE [dbo].[sp_GetAllProjects]
@@ -29,10 +30,6 @@ AS
 			WHERE A.DSPLY_FLG = 1 
 			AND B.DEPT_ID = @DEPT_ID AND DIV_ID = @DIV_ID
 			AND BILLABILITY = 1
-			AND A.[PROJ_ID] IN 
-			(
-				SELECT PROJ_ID FROM [ASSIGNED_PROJECTS] WHERE EMP_ID=@EMP_ID
-			)
 			ORDER BY PROJ_NAME ASC
 		END
 	ELSE IF @DISPLAY_STATUS = 1 -- Display All Projects
@@ -42,14 +39,31 @@ AS
 			INNER JOIN EMPLOYEE B ON A.EMP_ID = B.EMP_ID
 			WHERE A.DSPLY_FLG = 1 
 			AND B.DEPT_ID = @DEPT_ID AND DIV_ID = @DIV_ID
-			AND A.[PROJ_ID] IN 
-			(
-				SELECT PROJ_ID FROM [ASSIGNED_PROJECTS] WHERE EMP_ID=@EMP_ID
-				union
-				SELECT PROJ_ID FROM [PROJECT] WHERE BILLABILITY=0
-			)
+			UNION
+			SELECT A.[PROJ_ID], A.[PROJ_CD], A.[PROJ_NAME], A.[CATEGORY], A.[BILLABILITY]
+			FROM [dbo].[PROJECT] A
+			WHERE A.DSPLY_FLG = 1 
+			AND BILLABILITY=0
+			ORDER BY PROJ_NAME ASC
+		END
+	ELSE IF @DISPLAY_STATUS = 2 -- Display All Projects Assigned to Employee
+		BEGIN
+			SELECT A.[PROJ_ID], A.[PROJ_CD], A.[PROJ_NAME], A.[CATEGORY], A.[BILLABILITY]
+			FROM [dbo].[PROJECT] A			
+			INNER JOIN ASSIGNED_PROJECTS B ON B.EMP_ID = @Emp_ID AND A.PROJ_ID = B.PROJ_ID
+			INNER JOIN EMPLOYEE C ON C.EMP_ID = B.EMP_ID
+			WHERE A.DSPLY_FLG = 1 
+			AND C.DEPT_ID = @DEPT_ID AND C.DIV_ID = @DIV_ID
+			UNION
+			SELECT A.[PROJ_ID], A.[PROJ_CD], A.[PROJ_NAME], A.[CATEGORY], A.[BILLABILITY]
+			FROM [dbo].[PROJECT] A
+			WHERE A.DSPLY_FLG = 1 
+			AND BILLABILITY=0
 			ORDER BY PROJ_NAME ASC
 		END
 
+
+
+GO
 
 
