@@ -24,7 +24,8 @@
                         "tables", 
                         "views", 
                         "stored_procedures", 
-                        "functions" 
+                        "functions" ,
+                        "data"
                     ]
                 },
                 "account" : {
