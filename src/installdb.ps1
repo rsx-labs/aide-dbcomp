@@ -11,9 +11,9 @@ Function Show-Welcome {
     Param($ver)
     Log("*************** install start ***************")
     Clear-Host
-    Write-Host "---------------------------------------------------------------"
-    Write-Host "aide dbcomp installer " $ver -ForegroundColor Green;
-    Write-Host "---------------------------------------------------------------"
+    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor White
+    Write-Host "aide dbcomp installer "$ver"                                     " -ForegroundColor White -BackgroundColor DarkGreen
+    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor White
     Write-Host ""
     Log("starting installer ...")
 }
@@ -23,9 +23,9 @@ Function Exit-Install {
     Write-Host "summary:" -ForegroundColor Yellow;
     Write-Host "executed : $($script:executed)  ;  success : $($script:success)  ;" `
                 "  warning : $($script:warning)"
-    Write-Host "---------------------------------------------------------------"
-    Write-Host "end aide dbcomp installer " -ForegroundColor Green;
-    Write-Host "---------------------------------------------------------------"
+    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor White
+    Write-Host "end aide dbcomp installer                                      " -BackgroundColor DarkGreen -ForegroundColor White
+    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor White
     Log("*************** install end ***************")
 }
 
@@ -168,7 +168,6 @@ function Install-Account {
         Set-Location ".."
     }
 }
-
 Function Log {
     param(
         [Parameter(Mandatory=$true)][String]$msg
@@ -195,7 +194,7 @@ Write-Host "install type : " -NoNewline
 Write-Host " " $type " " -ForegroundColor White -BackgroundColor DarkMagenta;
 Write-Host 
 
-Write-Host "Install Settings" -ForegroundColor Yellow;
+Write-Host "*****  install Settings *****" -ForegroundColor Black -BackgroundColor Gray;
 Write-Host "installer version  : $($inst_version)"
 Write-Host "log location  : $($log_loc)"
 Write-Host "database server  : $($server)"
@@ -215,6 +214,11 @@ if ($confirmation -eq 'y') {
         Install-DBDelta
     }
     Set-Location $current_loc
+    # update the registry
+    Write-Host ""
+    Write-Host "updating registry for aide-dbcomp version ..."
+    reg import .\version.reg
+    Write-Host ""
     Exit-Install
 }
 else {
