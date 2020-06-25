@@ -1,0 +1,53 @@
+{
+    "scheduled_task" : [
+        {
+            "name": "aide morning daily task",
+            "schedule":{
+                "time":"08:00",
+                "days":"M.T,W,TH,F,SA,SN"
+            },
+            "tasks" : [
+                {
+                    "command" : "",
+                    "arguments" : ""
+                },
+                {
+                    "command" : "",
+                    "arguments" : ""
+                },
+                {
+                    "command" : "",
+                    "arguments" : ""
+                }
+
+            ]   
+        },
+        {
+            "name": "aide afternoon daily task",
+            "schedule":{
+                "time":"13:30",
+                "days":"M.T,W,TH,F,SA,SN"
+            },
+            "tasks" : [
+                {
+                    "command" : "",
+                    "arguments" : ""
+                }
+            ]   
+        },
+        {
+            "name": "aide evening daily task",
+            "schedule":{
+                "time":"20:00",
+                "days":"M.T,W,TH,F,SA,SN"
+            },
+            "tasks" : [
+                {
+                    "command" : "",
+                    "arguments" : ""
+                }
+            ]   
+        }
+    ]
+
+}
