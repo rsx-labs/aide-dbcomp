@@ -1,9 +1,10 @@
-# AIDE DBComp
+# AIDE ServerComp
 
-This is the database component of AIDE
+This is the server component of AIDE. This includes the database, scheduled tasks and miscellaneous components that reside on the server.
 
 ## Technology Stack
 - MS SQL Server
+- Windows 10 Pro
 
 ## Folder Structure
 
