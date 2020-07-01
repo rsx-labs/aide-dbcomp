@@ -118,6 +118,7 @@ function Install-AllDelta {
         }
 
         Set-Location ".."
+        Log(Get-Location)
     }
 }
 
@@ -166,6 +167,7 @@ function Install-Account {
         }
 
         Set-Location ".."
+        Log(Get-Location)
     }
 }
 Function Log {
