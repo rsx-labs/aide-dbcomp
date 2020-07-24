@@ -16,7 +16,10 @@ VALUES(18,'Minimum version')
 
 --Option
 Delete From [Option]
-Where OptionID in (47, 48)
+Where OptionID in (14, 47, 48)
+
+INSERT INTO [dbo].[OPTION]([OptionID],[ModuleID],[FunctionID],[Description],[Value])
+VALUES (14, 4 ,16,'App Config - Event Startup ID from Event Viewer','4624')
 
 INSERT INTO [dbo].[OPTION]([OptionID],[ModuleID],[FunctionID],[Description],[Value])
 VALUES (47,4 ,17,'Update feed url','http://10.158.47.100:8010/Installers/')
