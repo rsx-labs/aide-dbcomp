@@ -11,9 +11,9 @@ Function Show-Welcome {
     Param($ver)
     Log("*************** install start ***************")
     Clear-Host
-    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor White
-    Write-Host "aide dbcomp installer "$ver"                                     " -ForegroundColor White -BackgroundColor DarkGreen
-    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor White
+    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor Black
+    Write-Host "aide dbcomp installer "$ver"                                     " -ForegroundColor Black -BackgroundColor DarkGreen
+    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor Black
     Write-Host ""
     Log("starting installer ...")
 }
@@ -23,9 +23,9 @@ Function Exit-Install {
     Write-Host "summary:" -ForegroundColor Yellow;
     Write-Host "executed : $($script:executed)  ;  success : $($script:success)  ;" `
                 "  warning : $($script:warning)"
-    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor White
-    Write-Host "end aide dbcomp installer                                      " -BackgroundColor DarkGreen -ForegroundColor White
-    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor White
+    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor Black
+    Write-Host "end aide dbcomp installer                                      " -BackgroundColor DarkGreen -ForegroundColor Black
+    Write-Host "---------------------------------------------------------------" -BackgroundColor DarkGreen -ForegroundColor Black
     Log("*************** install end ***************")
 }
 
@@ -98,17 +98,18 @@ function Install-AllDelta {
         
         Get-ChildItem $cd -Filter *.sql | Foreach-Object {
             Log("- installing $($_.Name)")
+            $sql_log = "$($log_loc)\log_$($_.Name).log"
             $script:executed ++
             Write-Host "- executing $($_.Name)" -NoNewline
             Invoke-Sqlcmd -InputFile $_.Name `
                     -ServerInstance $server  `
                     -Database $dbase | `
-                    Out-File -FilePath "c:\Temp\log_$($_.Name).log" 
+                    Out-File -FilePath $sql_log 
             
-            If ((Get-Item "c:\Temp\log_$($_.Name).log").length -gt 0 ){
+            If ((Get-Item $sql_log).length -gt 0 ){
                 Write-Host " WARNING" -ForegroundColor Red
-                Write-Warning("possible error. review : ""c:\Temp\log_$($_.Name).log")
-                Log("possible error. review : ""c:\Temp\log_$($_.Name).log")
+                Write-Warning("possible error. review : $($sql_log)")
+                Log("possible error. review : $($sql_log)")
                 $script:warning ++
             } else {
                 Write-Host " OK " -ForegroundColor DarkGreen;
@@ -118,6 +119,7 @@ function Install-AllDelta {
         }
 
         Set-Location ".."
+        Log(Get-Location)
     }
 }
 
@@ -146,17 +148,17 @@ function Install-Account {
         
         Get-ChildItem $cd -Filter *.sql | Foreach-Object {
             Log("- installing $($_.Name)")
+            $sql_log = "$($log_loc)\log_$($_.Name).log"
             $script:executed ++
             Invoke-Sqlcmd -InputFile $_.Name `
                     -ServerInstance $server  `
                     -Database $dbase | `
-           
-                    Out-File -FilePath "c:\Temp\log_$($_.Name).log" 
+                    Out-File -FilePath $sql_log 
 
-            If ((Get-Item "c:\Temp\log_$($_.Name).log").length -gt 0 ){
+            If ((Get-Item $sql_log).length -gt 0 ){
                 Write-Host " WARNING" -ForegroundColor Red
-                Write-Warning("possible error. review : ""c:\Temp\log_$($_.Name).log")
-                Log("possible error. review : ""c:\Temp\log_$($_.Name).log")
+                Write-Warning("possible error. review : $($sql_log)")
+                Log("possible error. review : $($sql_log)")
                 $script:warning ++
             } else {
                 Write-Host " OK " -ForegroundColor DarkGreen;
@@ -166,6 +168,7 @@ function Install-Account {
         }
 
         Set-Location ".."
+        Log(Get-Location)
     }
 }
 Function Log {
@@ -173,7 +176,7 @@ Function Log {
         [Parameter(Mandatory=$true)][String]$msg
     )
     
-    Add-Content $log_loc $msg
+    Add-Content $log_file $msg
 }
 
 
@@ -183,11 +186,20 @@ Function Log {
 $settings = Get-Content -Raw -Path ".\install.setting.json" | ConvertFrom-Json
 $inst_version = $settings.setting.version
 $log_loc = $settings.setting.log_loc
+$log = $settings.setting.log
 $server = $settings.setting.database.server
 $dbase = $settings.setting.database.dbase
 $executed =0 
 $success = 0
 $warning = 0
+
+#create the log dir if not exist
+$dir_exist = Test-Path $log_loc
+if ($dir_exist -eq $false){
+    New-Item $log_loc -ItemType Directory
+}
+
+$log_file = Join-Path $log_loc $log
 
 Show-Welcome($inst_version)
 Write-Host "install type : " -NoNewline
@@ -201,6 +213,7 @@ Write-Host "database server  : $($server)"
 Write-Host "database  : $($dbase)"
 
 Write-Host ""
+Log("hello")
 
 $confirmation = Read-Host "Are you Sure You Want To Proceed (y/n)"
 if ($confirmation -eq 'y') {

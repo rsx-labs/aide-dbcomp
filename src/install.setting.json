@@ -1,7 +1,8 @@
 {
     "setting" : {
         "version" : "0.1",
-        "log_loc" : "c:\\Temp\\aide-dbcomp-install.log",
+        "log_loc": "c:\\Temp\\Aide",
+        "log" : "aide-dbcomp-install.log",
         "database" : {
             "server" : "localhost",
             "dbase" : "AIDE"
