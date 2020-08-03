@@ -148,16 +148,17 @@ function Install-Account {
         
         Get-ChildItem $cd -Filter *.sql | Foreach-Object {
             Log("- installing $($_.Name)")
+            $sql_log = "$($log_loc)\log_$($_.Name).log"
             $script:executed ++
             Invoke-Sqlcmd -InputFile $_.Name `
                     -ServerInstance $server  `
                     -Database $dbase | `
-                    Out-File -FilePath "c:\Temp\log_$($_.Name).log" 
+                    Out-File -FilePath $sql_log 
 
-            If ((Get-Item "c:\Temp\log_$($_.Name).log").length -gt 0 ){
+            If ((Get-Item $sql_log).length -gt 0 ){
                 Write-Host " WARNING" -ForegroundColor Red
-                Write-Warning("possible error. review : ""c:\Temp\log_$($_.Name).log")
-                Log("possible error. review : ""c:\Temp\log_$($_.Name).log")
+                Write-Warning("possible error. review : $($sql_log)")
+                Log("possible error. review : $($sql_log)")
                 $script:warning ++
             } else {
                 Write-Host " OK " -ForegroundColor DarkGreen;
