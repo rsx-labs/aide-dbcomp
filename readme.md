@@ -1,5 +1,5 @@
 # AIDE ServerComp
-![release version](https://img.shields.io/badge/release%20version-3.3.8.0-blue)
+![release version](https://img.shields.io/badge/release%20version-3.3.9.0-blue)
 
 This is the server component of AIDE. This includes the database, scheduled tasks and miscellaneous components that reside on the server.
 
